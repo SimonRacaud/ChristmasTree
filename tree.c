@@ -43,18 +43,6 @@ void calc_height_width(int *size, int *tree_height, int *tree_width)
     }
 }
 
-int calc_height(int *size)
-{
-    int tree_height = 0;
-    int bloc_size = 4;
-
-    for (int i = 0; i < *size; i++) {
-        tree_height += bloc_size;
-        bloc_size++;
-    }
-    return (tree_height);
-}
-
 void display_foliage(int *tree_height, int *tree_width)
 {
     int bloc_size = 4;
