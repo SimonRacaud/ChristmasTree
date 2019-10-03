@@ -5,24 +5,42 @@
 ** Project of the first pool week
 */
 
-// DEBUG \/
-#include <stdio.h>
-
 int my_putchar(char c);
-int calc_height(int *size);
-int calc_width(int *size);
+void calc_height_width(int *size, int *tree_height, int *tree_width);
 void display_foliage(int *tree_height, int *tree_width);
+void display_foliage_char(int *tree_width, int *curr_width);
 void display_trunk(int *size, int *tree_width);
 
 void tree(int size)
 {
-    int tree_height;
-    int tree_width;
+    int tree_height = 0;
+    int tree_width = -1;
 
-    tree_height = calc_height(&size);
-    tree_width = calc_width(&size);
+    calc_height_width(&size, &tree_height, &tree_width);
     display_foliage(&tree_height, &tree_width);
     display_trunk(&size, &tree_width);
+}
+
+void calc_height_width(int *size, int *tree_height, int *tree_width)
+{
+    int bloc_size = 4;
+    int bloc_space = 2;
+
+    for (int i = 0; i < *size; i++) {
+        *tree_height += bloc_size;
+        bloc_size++;
+    }
+    bloc_size = 4;
+    for (int i = 0; i < *size; i++) {
+        for (int j = 0; j < bloc_size; j++) {
+            *tree_width += 2;
+        }
+        if (i != *size-1)
+            *tree_width -= (bloc_space + 2);
+        if ((i + 1) % 2 == 0)
+            bloc_space += 2;
+        bloc_size++;
+    }
 }
 
 int calc_height(int *size)
@@ -37,25 +55,6 @@ int calc_height(int *size)
     return (tree_height);
 }
 
-int calc_width(int *size)
-{
-    int bloc_size = 4;
-    int bloc_space = 2;
-    int tree_width = -1;
-
-    for (int i = 0; i < *size; i++) {
-        for (int j = 0; j < bloc_size; j++) {
-            tree_width += 2;
-        }
-        if (i != *size-1)
-            tree_width -= (bloc_space+2);
-        if ((i+1) % 2 == 0)
-            bloc_space += 2;
-        bloc_size++;
-    }
-    return (tree_width);
-}
-
 void display_foliage(int *tree_height, int *tree_width)
 {
     int bloc_size = 4;
@@ -65,22 +64,27 @@ void display_foliage(int *tree_height, int *tree_width)
     int bloc_count = 1;
 
     for (int i = 0; i < *tree_height; i++) {
-        for (int k=0; k < ((*tree_width/2)-(curr_width/2)); k++)
-            my_putchar(' ');
-        for (int j=0; j < curr_width; j++)
-            my_putchar('*');
-        my_putchar('\n');
-        curr_width+=2;
+        display_foliage_char(tree_width, &curr_width);
+        curr_width += 2;
         bloc_i++;
         if (bloc_i == bloc_size) {
             bloc_size++;
-            curr_width -= (bloc_space+2);
+            curr_width -= (bloc_space + 2);
             if (bloc_count % 2 == 0)
                 bloc_space += 2;
-            bloc_i=0;
+            bloc_i = 0;
             bloc_count++;
         }
     }
+}
+
+void display_foliage_char(int *tree_width, int *curr_width)
+{
+    for (int k=0; k < ((*tree_width / 2) - (*curr_width / 2)); k++)
+        my_putchar(' ');
+    for (int j=0; j < *curr_width; j++)
+        my_putchar('*');
+    my_putchar('\n');
 }
 
 void display_trunk(int *size, int *tree_width)
