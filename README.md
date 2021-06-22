@@ -1,4 +1,6 @@
 # CPool_Tree_2019
+Epitech's first-year project.
+
 Display a fir tree with personalized size. 
 [Epitech CPool project]
 
